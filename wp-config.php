@@ -4,7 +4,7 @@
  *
  * The wp-config.php creation script uses this file during the
  * installation. You don't have to use the web site, you can
- * copy this file to "wp-config.php" and fill in the values.
+ * copy this file to 'wp-config.php' and fill in the values.
  *
  * This file contains the following configurations:
  *
@@ -18,24 +18,17 @@
  * @package WordPress
  */
 
-// ** MySQL settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-define( 'DB_NAME', 'heroku_30f118ef131c465' );
-
-/** MySQL database username */
-define( 'DB_USER', 'bae9073566ada7' );
-
-/** MySQL database password */
-define( 'DB_PASSWORD', 'f53dbc9a' );
-
-/** MySQL hostname */
-define( 'DB_HOST', 'us-cdbr-iron-east-02.cleardb.net:3306' );
-
-/** Database Charset to use in creating database tables. */
-define( 'DB_CHARSET', 'utf8' );
-
-/** The Database Collate type. Don't change this if in doubt. */
-define( 'DB_COLLATE', '' );
+if(isset($_ENV['CLEARDB_DATABASE_URL'])) {
+    $db = parse_url($_ENV['CLEARDB_DATABASE_URL']);
+    define(‘DB_NAME’, trim($db['path'],'/'));
+    define(‘DB_USER’, $db['user']);
+    define(‘DB_PASSWORD’, $db['pass']);
+    define(‘DB_HOST’, $db['host']);
+    define(‘DB_CHARSET’, 'utf8');
+    define(‘DB_COLLATE’, '');
+} else {
+    die(‘No Database credentials!’);
+}
 
 /**#@+
  * Authentication Unique Keys and Salts.
@@ -46,14 +39,14 @@ define( 'DB_COLLATE', '' );
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         'put your unique phrase here' );
-define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
-define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
-define( 'NONCE_KEY',        'put your unique phrase here' );
-define( 'AUTH_SALT',        'put your unique phrase here' );
-define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
-define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
-define( 'NONCE_SALT',       'put your unique phrase here' );
+define('AUTH_KEY',         $_ENV['AUTH_KEY']);
+define('SECURE_AUTH_KEY',  $_ENV['SECURE_AUTH_KEY']);
+define('LOGGED_IN_KEY',    $_ENV['LOGGED_IN_KEY']);
+define('NONCE_KEY',        $_ENV['NONCE_KEY']);
+define('AUTH_SALT',        $_ENV['AUTH_SALT']);
+define('SECURE_AUTH_SALT', $_ENV['SECURE_AUTH_SALT']);
+define('LOGGED_IN_SALT',   $_ENV['LOGGED_IN_SALT']);
+define('NONCE_SALT',       $_ENV['NONCE_SALT']);
 
 /**#@-*/
 
